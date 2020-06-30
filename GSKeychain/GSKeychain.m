@@ -25,14 +25,17 @@
 - (NSMutableDictionary *)genericLookupDictionaryForIdentifier:(NSString *)identifier
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    NSData *identifierData = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+     
+    if (identifier) {
+        NSData *identifierData = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+        // Set the specified identifier
+        [dict setObject:identifierData forKey:(__bridge id)kSecAttrAccount];
+    }
+    
     
     // Save/retrieve the secrets we're given as generic passwords.
     [dict setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
     
-    // Set the specified identifier
-    [dict setObject:identifierData forKey:(__bridge id)kSecAttrAccount];
-
     // Set the service identifier to the current bundle ID, if there is one
     NSString *service = [[NSBundle mainBundle] bundleIdentifier];
     if (service) {
